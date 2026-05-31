@@ -84,16 +84,56 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow"><span></span> Practice room</p>
-            <h2>Choose your training mode.</h2>
+            <h2>Choose which week to study.</h2>
           </div>
-          <p>Each run reshuffles the bank. Missed answers come with a short explanation.</p>
+          <p>Start with one week or combine both. Each run reshuffles the questions and explains missed answers.</p>
+        </div>
+
+        <div class="week-grid">
+          <article class="week-card week-one">
+            <div class="week-card-number">01</div>
+            <p class="eyebrow"><span></span> Week 1</p>
+            <h3>Big Data Foundations</h3>
+            <p>Big Data, Small Data, management, analytics, visualization, and data literacy.</p>
+            <div class="week-card-footer">
+              <b>115 questions</b>
+              <button class="card-button" data-start="week1" type="button">Study Week 1 <span>→</span></button>
+            </div>
+          </article>
+          <article class="week-card week-two">
+            <div class="week-card-number">02</div>
+            <p class="eyebrow"><span></span> Week 2</p>
+            <h3>Privacy & Smart Systems</h3>
+            <p>GDPR, ACG policies, AI, cybersecurity, smart cities, and visual storytelling.</p>
+            <div class="week-card-footer">
+              <b>88 questions</b>
+              <button class="card-button" data-start="week2" type="button">Study Week 2 <span>→</span></button>
+            </div>
+          </article>
+          <article class="week-card combined">
+            <div class="week-card-number">1+2</div>
+            <p class="eyebrow"><span></span> Combined</p>
+            <h3>Both Weeks Together</h3>
+            <p>Use the full bank or take a balanced 50-question Blackboard-style mock exam.</p>
+            <div class="week-card-footer">
+              <b>203 questions</b>
+              <button class="card-button" data-start="exam" type="button">Take combined mock <span>→</span></button>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-heading mode-heading">
+          <div>
+            <p class="eyebrow"><span></span> Extra modes</p>
+            <h3>More ways to practice.</h3>
+          </div>
         </div>
 
         <div class="mode-grid">
           <article class="mode-card featured">
-            <div class="mode-topline"><span>Exam simulation</span><b>50 Q</b></div>
-            <h3>Blackboard Mock</h3>
-            <p>A balanced mixed-format run across every major topic. Answer all questions.</p>
+            <div class="mode-topline"><span>Weeks 1 + 2</span><b>50 Q</b></div>
+            <h3>Combined Blackboard Mock</h3>
+            <p>A balanced mixed-format exam across both weeks. Answer all questions.</p>
             <button class="card-button" data-start="exam" type="button">Begin mock exam <span>→</span></button>
           </article>
           <article class="mode-card">
@@ -108,17 +148,6 @@
             <p>Work through every question in the bank for the broadest possible review.</p>
             <button class="card-button" data-start="all" type="button">Open full bank <span>→</span></button>
           </article>
-        </div>
-
-        <div class="week-panel">
-          <div>
-            <p class="eyebrow"><span></span> Weekly rooms</p>
-            <h3>Review one week without mixing the material.</h3>
-          </div>
-          <div class="week-actions">
-            <button class="ghost-button" data-start="week1" type="button">Open Week 1 drill</button>
-            <button class="primary-button" data-start="week2" type="button">Open Week 2 GDPR drill <span>→</span></button>
-          </div>
         </div>
 
         <div class="focus-box">

@@ -407,6 +407,102 @@ h3 {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.week-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.week-card {
+  position: relative;
+  display: flex;
+  min-height: 315px;
+  overflow: hidden;
+  flex-direction: column;
+  padding: 24px;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.week-card.week-one {
+  background: var(--teal);
+}
+
+.week-card.week-two {
+  background: var(--coral);
+}
+
+.week-card.combined {
+  background: var(--ink);
+}
+
+.week-card-number {
+  position: absolute;
+  top: 5px;
+  right: 16px;
+  color: rgba(255, 255, 255, 0.12);
+  font-family: var(--serif);
+  font-size: 88px;
+  line-height: 1;
+}
+
+.week-card .eyebrow {
+  position: relative;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.week-card .eyebrow span {
+  background: var(--gold);
+}
+
+.week-card h3 {
+  position: relative;
+  max-width: 270px;
+  margin-top: 33px;
+  font-family: var(--serif);
+  font-size: 35px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.week-card > p:not(.eyebrow) {
+  position: relative;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 13px;
+}
+
+.week-card-footer {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.week-card-footer b {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.week-card .card-button {
+  color: var(--white);
+  border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+.week-card .card-button span {
+  color: var(--gold);
+}
+
+.mode-heading {
+  margin: 47px 0 17px;
+}
+
+.mode-heading h3,
+.mode-heading .eyebrow {
+  margin-bottom: 0;
+}
+
 .mode-card {
   min-height: 285px;
   padding: 24px;
@@ -508,34 +604,6 @@ h3 {
   border-radius: 6px;
   background: var(--teal-pale);
   grid-template-columns: 0.7fr 1.3fr;
-}
-
-.week-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 14px;
-  padding: 25px;
-  color: var(--white);
-  border-radius: 6px;
-  background: var(--ink);
-}
-
-.week-panel h3,
-.week-panel .eyebrow {
-  margin-bottom: 0;
-}
-
-.week-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.week-panel .ghost-button {
-  color: var(--white);
-  border-color: rgba(255, 255, 255, 0.42);
 }
 
 .week-two-guide {
@@ -1117,6 +1185,7 @@ select {
     min-height: 360px;
   }
 
+  .week-grid,
   .mode-grid,
   .guide-grid {
     grid-template-columns: 1fr;
@@ -1124,10 +1193,6 @@ select {
 
   .focus-box {
     grid-template-columns: 1fr;
-  }
-
-  .week-panel {
-    display: grid;
   }
 
   .quiz-header {
