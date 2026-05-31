@@ -844,6 +844,38 @@ function sample(items, amount) {
   return shuffle(items).slice(0, amount);
 }
 
+function randomizeSessionQuestions(items) {
+  const availableCorrectSlots = new Map();
+
+  function takeCorrectSlot(optionCount) {
+    if (!availableCorrectSlots.get(optionCount)?.length) {
+      availableCorrectSlots.set(optionCount, shuffle(
+        Array.from({ length: optionCount }, (_, index) => index)
+      ));
+    }
+    return availableCorrectSlots.get(optionCount).pop();
+  }
+
+  return items.map((question) => {
+    if (question.type === "matching") {
+      return {
+        ...question,
+        pairs: shuffle(question.pairs.map((pair) => [...pair])),
+        options: shuffle(question.options),
+      };
+    }
+
+    const options = shuffle(question.options);
+    if (question.type === "single" || question.type === "truefalse") {
+      const correctIndex = options.indexOf(question.answer);
+      const targetIndex = takeCorrectSlot(options.length);
+      [options[correctIndex], options[targetIndex]] = [options[targetIndex], options[correctIndex]];
+    }
+
+    return { ...question, options };
+  });
+}
+
 function getStoredStats() {
   try {
     return JSON.parse(localStorage.getItem("signal-lab-stats")) || { attempts: 0, best: null };
@@ -868,16 +900,23 @@ function updateDashboardStats() {
 }
 
 function createSession(config) {
+  let session;
   if (config.mode === "exam") {
-    return shuffle(Object.entries(examQuotas).flatMap(([topic, quota]) => (
+    session = shuffle(Object.entries(examQuotas).flatMap(([topic, quota]) => (
       sample(questions.filter((question) => question.category === topic), quota)
     )));
+  } else if (config.mode === "quick") {
+    session = sample(questions, 15);
+  } else if (config.mode === "week1") {
+    session = shuffle(questions.filter((question) => question.week === 1));
+  } else if (config.mode === "week2") {
+    session = shuffle(questions.filter((question) => question.week === 2));
+  } else if (config.mode === "topic") {
+    session = shuffle(questions.filter((question) => question.category === config.topic));
+  } else {
+    session = shuffle(questions);
   }
-  if (config.mode === "quick") return sample(questions, 15);
-  if (config.mode === "week1") return shuffle(questions.filter((question) => question.week === 1));
-  if (config.mode === "week2") return shuffle(questions.filter((question) => question.week === 2));
-  if (config.mode === "topic") return shuffle(questions.filter((question) => question.category === config.topic));
-  return shuffle(questions);
+  return randomizeSessionQuestions(session);
 }
 
 function startQuiz(config) {
