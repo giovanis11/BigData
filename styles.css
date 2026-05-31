@@ -510,6 +510,56 @@ h3 {
   grid-template-columns: 0.7fr 1.3fr;
 }
 
+.week-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 14px;
+  padding: 25px;
+  color: var(--white);
+  border-radius: 6px;
+  background: var(--ink);
+}
+
+.week-panel h3,
+.week-panel .eyebrow {
+  margin-bottom: 0;
+}
+
+.week-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.week-panel .ghost-button {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+.week-two-guide {
+  padding-top: 88px;
+}
+
+.source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+}
+
+.source-links a {
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.source-links a:hover {
+  color: var(--coral);
+}
+
 .focus-box h3,
 .focus-box .eyebrow {
   margin-bottom: 0;
@@ -1074,6 +1124,10 @@ select {
 
   .focus-box {
     grid-template-columns: 1fr;
+  }
+
+  .week-panel {
+    display: grid;
   }
 
   .quiz-header {
