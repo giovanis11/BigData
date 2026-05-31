@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A comprehensive Big Data and Data Visualization exam study lab."
+    />
+    <title>Signal Lab | Big Data Exam Prep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Signal Lab home">
+        <span class="brand-mark">S</span>
+        <span>Signal Lab</span>
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#practice">Practice</a>
+        <a href="#guide">Study guide</a>
+        <button class="text-button" id="reset-progress" type="button">Reset progress</button>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section-shell">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Big Data / Week 1 review</p>
+          <h1>Turn raw notes into <em>exam-ready</em> signals.</h1>
+          <p class="hero-text">
+            Practice the full Week 1 resource pack with Blackboard-style questions:
+            multiple choice, true or false, select-all, and matching.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-button" data-start="exam" type="button">
+              Start 50-question mock
+              <span aria-hidden="true">↗</span>
+            </button>
+            <a class="ghost-button" href="#guide">Open study guide</a>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="data-core">
+            <span class="core-label">CORE</span>
+            <strong>4V</strong>
+            <small>Volume · Velocity<br />Variety · Veracity</small>
+          </div>
+          <div class="signal-card signal-a"><b>01</b><span>Analytics</span></div>
+          <div class="signal-card signal-b"><b>02</b><span>Management</span></div>
+          <div class="signal-card signal-c"><b>03</b><span>Visuals</span></div>
+        </div>
+      </section>
+
+      <section class="stats-strip section-shell" aria-label="Study stats">
+        <div>
+          <strong id="bank-total">0</strong>
+          <span>review questions</span>
+        </div>
+        <div>
+          <strong>50</strong>
+          <span>questions in mock exam</span>
+        </div>
+        <div>
+          <strong id="best-score">--</strong>
+          <span>best mock score</span>
+        </div>
+        <div>
+          <strong id="attempt-count">0</strong>
+          <span>completed sessions</span>
+        </div>
+      </section>
+
+      <section class="practice section-shell" id="practice">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span></span> Practice room</p>
+            <h2>Choose your training mode.</h2>
+          </div>
+          <p>Each run reshuffles the bank. Missed answers come with a short explanation.</p>
+        </div>
+
+        <div class="mode-grid">
+          <article class="mode-card featured">
+            <div class="mode-topline"><span>Exam simulation</span><b>50 Q</b></div>
+            <h3>Blackboard Mock</h3>
+            <p>A balanced mixed-format run across every major topic. Answer all questions.</p>
+            <button class="card-button" data-start="exam" type="button">Begin mock exam <span>→</span></button>
+          </article>
+          <article class="mode-card">
+            <div class="mode-topline"><span>Daily review</span><b>15 Q</b></div>
+            <h3>Quick Pulse</h3>
+            <p>A shorter randomized practice set for checking recall without a long session.</p>
+            <button class="card-button" data-start="quick" type="button">Start quick pulse <span>→</span></button>
+          </article>
+          <article class="mode-card">
+            <div class="mode-topline"><span>Full coverage</span><b>ALL</b></div>
+            <h3>Question Bank</h3>
+            <p>Work through every question in the bank for the broadest possible review.</p>
+            <button class="card-button" data-start="all" type="button">Open full bank <span>→</span></button>
+          </article>
+        </div>
+
+        <div class="focus-box">
+          <div>
+            <p class="eyebrow"><span></span> Focus mode</p>
+            <h3>Drill one topic at a time.</h3>
+          </div>
+          <div class="topic-chips" id="topic-chips"></div>
+        </div>
+      </section>
+
+      <section class="guide section-shell" id="guide">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span></span> Study guide</p>
+            <h2>The high-yield map.</h2>
+          </div>
+          <p>Use these as checkpoints before a mock exam. Open a card to scan its details.</p>
+        </div>
+        <div class="guide-grid">
+          <details open>
+            <summary><span>01</span> The 4Vs of Big Data</summary>
+            <div>
+              <p><b>Volume</b> is amount. <b>Velocity</b> is speed. <b>Variety</b> is diversity of formats. <b>Veracity</b> is trust, quality, accuracy, integrity, and credibility.</p>
+              <p>The instructor materials also use the classic “3Vs” shorthand: Volume, Velocity, and Variety. The reading adds Veracity as the fourth dimension.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>02</span> Big Data vs Small Data</summary>
+            <div>
+              <p>Big Data is large, complex, constantly changing, sourced widely, and able to absorb unstructured data. It usually needs experts, cleaning, distributed storage, and new workflows.</p>
+              <p>Small Data is closer to end users, often structured, easier to translate into information and business intelligence, and commonly analyzed in spreadsheets.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>03</span> Management, Analysis & Storage</summary>
+            <div>
+              <p><b>Data management</b> collects, stores, organizes, and maintains accurate, available, accessible data. <b>Data analysis</b> transforms data into useful information. <b>Data mining</b> searches for hidden patterns and trends.</p>
+              <p>Databases connect related files. Forms input data; queries retrieve it. Warehouses consolidate current and historical data for analysis. Lakes hold raw structured, semi-structured, and unstructured data without a predefined schema.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>04</span> Analytics in Practice</summary>
+            <div>
+              <p>Know the use cases: predictive analytics, fraud detection, personalized marketing, recommendation systems, sentiment analysis, healthcare, energy management, smart cities, and IoT analytics.</p>
+              <p>The reading adds applications in e-commerce, education, banking, telecommunications, and government services.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>05</span> Visual Analytics</summary>
+            <div>
+              <p>Visualization turns raw data into charts, graphs, images, or video so viewers can understand patterns and trends. Visual analytics helps people explore, detect, compare, and explain.</p>
+              <p>Anscombe’s Quartet shows why plots matter: four datasets share nearly identical summary statistics but reveal dramatically different patterns when visualized.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>06</span> How Visuals Communicate</summary>
+            <div>
+              <p><b>Semiotics</b> studies meaning in signs, symbols, colors, and shapes. <b>Preattentive attributes</b> such as color, size, shape, position, orientation, and length are noticed almost instantly.</p>
+              <p>Gestalt principles describe natural grouping: proximity, similarity, closure, and continuity. Apply them deliberately and avoid false grouping.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>07</span> Data Literacy Cases</summary>
+            <div>
+              <p>Behavioral reflection is data created by actions, such as choosing a Netflix movie. Direct input is data a user deliberately provides, such as rating that movie.</p>
+              <p>Social media improves connection and access but requires careful vetting. The Yale alumni income example shows how self-reporting, non-response, and selection bias can inflate a result.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>08</span> Data Scale</summary>
+            <div>
+              <p>The slide sequence is Byte, Kilobyte, Megabyte, Gigabyte, Terabyte, Petabyte, Exabyte, Zettabyte. Each step shown is 1,024 of the preceding unit.</p>
+              <p>Examples from the deck: a byte is one character; a megabyte can hold a 20-slide PowerPoint; a terabyte can hold roughly 300 hours of good-quality video.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="source-note section-shell">
+        <p class="eyebrow"><span></span> Source pack</p>
+        <p>
+          Built from the supplied instructor presentations, formative exam, and
+          <i>Data Literacy</i> Chapter 2 sections 2.4.1–2.4.5. The exam note says the
+          Blackboard assessment contains 50 required questions in multiple-choice,
+          true/false, and matching formats.
+        </p>
+      </section>
+    </main>
+
+    <section class="quiz-overlay" id="quiz-overlay" aria-hidden="true">
+      <div class="quiz-shell">
+        <header class="quiz-header">
+          <div class="quiz-brand">
+            <span class="brand-mark">S</span>
+            <div>
+              <b>Signal Lab</b>
+              <small id="quiz-mode-label">Mock exam</small>
+            </div>
+          </div>
+          <div class="quiz-progress-wrap">
+            <span id="quiz-progress-text">Question 1 of 50</span>
+            <div class="quiz-progress"><i id="quiz-progress-bar"></i></div>
+          </div>
+          <button class="close-button" id="close-quiz" type="button" aria-label="Close quiz">×</button>
+        </header>
+
+        <div class="quiz-body" id="quiz-body">
+          <aside class="quiz-sidebar">
+            <p class="eyebrow"><span></span> Session map</p>
+            <div class="question-dots" id="question-dots"></div>
+            <div class="sidebar-key">
+              <span><i class="current"></i> Current</span>
+              <span><i class="done"></i> Answered</span>
+            </div>
+          </aside>
+          <section class="question-stage">
+            <div class="question-meta">
+              <span id="question-category">Big Data Core</span>
+              <span id="question-type">Multiple choice</span>
+            </div>
+            <h2 id="question-prompt"></h2>
+            <p class="question-help" id="question-help"></p>
+            <div class="answer-area" id="answer-area"></div>
+            <div class="feedback" id="feedback" aria-live="polite"></div>
+            <div class="question-actions">
+              <button class="ghost-button" id="previous-question" type="button">← Previous</button>
+              <button class="primary-button" id="submit-answer" type="button">Check answer</button>
+              <button class="primary-button hidden" id="next-question" type="button">Next question <span>→</span></button>
+            </div>
+          </section>
+        </div>
+
+        <div class="results hidden" id="results">
+          <p class="eyebrow"><span></span> Session complete</p>
+          <h2 id="results-title">Strong signal.</h2>
+          <div class="score-ring">
+            <strong id="results-score">0%</strong>
+            <span id="results-fraction">0 / 0 correct</span>
+          </div>
+          <p class="results-copy" id="results-copy"></p>
+          <div class="results-breakdown" id="results-breakdown"></div>
+          <div class="results-actions">
+            <button class="primary-button" id="retry-quiz" type="button">Retry this mode</button>
+            <button class="ghost-button" id="review-mistakes" type="button">Review missed answers</button>
+            <button class="ghost-button" id="return-dashboard" type="button">Return to dashboard</button>
+          </div>
+          <div class="mistake-review hidden" id="mistake-review"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Signal Lab</span>
+      <span>Big Data exam prep · Week 1 resource pack</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
