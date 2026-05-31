@@ -1058,7 +1058,9 @@ function renderDots() {
     const dot = document.createElement("button");
     dot.type = "button";
     dot.className = "question-dot";
-    if (state.checked.has(question.id)) dot.classList.add("done");
+    if (state.checked.has(question.id)) {
+      dot.classList.add(state.correct[question.id] ? "done" : "incorrect");
+    }
     if (index === state.index) dot.classList.add("current");
     dot.textContent = index + 1;
     dot.setAttribute("aria-label", `Go to question ${index + 1}`);

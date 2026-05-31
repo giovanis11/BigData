@@ -848,11 +848,17 @@ footer {
   background: var(--teal);
 }
 
-.question-dot.current {
+.question-dot.incorrect {
   color: var(--white);
   border-color: var(--coral);
   background: var(--coral);
-  box-shadow: 0 0 0 3px var(--coral-pale);
+}
+
+.question-dot.current {
+  color: var(--white);
+  border-color: var(--gold);
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(229, 185, 82, 0.25);
 }
 
 .sidebar-key {
@@ -879,11 +885,15 @@ footer {
 }
 
 .sidebar-key .current {
-  background: var(--coral);
+  background: var(--gold);
 }
 
 .sidebar-key .done {
   background: var(--teal);
+}
+
+.sidebar-key .incorrect {
+  background: var(--coral);
 }
 
 .question-stage {
