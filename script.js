@@ -25,7 +25,7 @@ const tf = (category, prompt, answer, explanation) => ({
 const matching = (category, prompt, pairs, explanation) => ({
   category, prompt, pairs, explanation, type: "matching",
   answer: Object.fromEntries(pairs),
-  options: pairs.map(([, value]) => value),
+  options: [...new Set(pairs.map(([, value]) => value))],
 });
 
 const questions = [
@@ -407,8 +407,8 @@ const questions = [
     "Bias from self-reporting and selective responses",
     "The reading explains that self-reporting, response bias, and who could be located made the reported average misleadingly high."),
   multi(TOPICS.literacy, "Which factors can inflate a self-reported alumni income survey?",
-    ["People exaggerating their income", "Only people who choose to respond being counted", "Successful alumni being easier to locate", "Perfect participation from every graduate"],
-    ["People exaggerating their income", "Only people who choose to respond being counted", "Successful alumni being easier to locate"],
+    ["People exaggerating their income", "People who choose to respond being counted", "Successful alumni being easier to locate", "Perfect participation from every graduate"],
+    ["People exaggerating their income", "People who choose to respond being counted", "Successful alumni being easier to locate"],
     "The Yale example illustrates self-reporting bias, non-response bias, and selection bias."),
   tf(TOPICS.literacy, "A large amount of doubtful-quality data can create more confusion than insight.", true,
     "More data is not automatically better; low veracity can undermine the value of a large dataset."),
@@ -507,7 +507,7 @@ const week2Questions = [
     "Accountability means the controller must be able to show that the principles are followed."),
   matching(TOPICS.gdpr, "Match each GDPR principle to its meaning.", [
     ["Purpose limitation", "Use data for the specified legitimate purposes"],
-    ["Data minimization", "Collect only what is necessary"],
+    ["Data minimization", "Collect the data necessary for the specified purpose"],
     ["Accuracy", "Keep personal data correct and up to date"],
     ["Storage limitation", "Keep data no longer than necessary"],
     ["Integrity and confidentiality", "Protect security and confidentiality"],
@@ -792,6 +792,250 @@ questions.forEach((question, index) => {
   question.id = `q-${index + 1}`;
 });
 
+// Keep the study-bank answers intact while making the exam choices plausible.
+// These distractors stay within the concept being tested and avoid obvious length cues.
+const midtermChoiceOverrides = {
+  "q-1": ["Volume", "Velocity", "Variety", "Veracity", "Variability", "Value"],
+  "q-2": ["Velocity", "Veracity", "Volume", "Variety"],
+  "q-3": ["Variety", "Velocity", "Volume", "Veracity", "Variability"],
+  "q-4": ["Veracity", "Volume", "Variety", "Velocity"],
+  "q-5": ["Variety", "Velocity", "Veracity", "Volume", "Reliability"],
+  "q-8": ["A large archive whose scale requires specialized tools even though its records remain fixed and uniform", "A collection of streaming data that must come from social platforms and be processed immediately", "A large and complex collection that grows rapidly and may require specialized processing", "A relational database with many connected tables but conventional storage and processing needs"],
+  "q-9": ["Mobile phone sensors", "Online shopping", "Surveillance cameras", "Social media", "A scanned invoice archive maintained for manual filing"],
+  "q-10": ["Movement and location data", "Consumer behavior and purchasing data", "Social and opinion data", "Historical warehouse records"],
+  "q-11": ["Movement and location data", "Consumer behavior data", "Visual data", "Social and opinion data"],
+  "q-12": ["Visual data", "Consumer behavior data", "Social and opinion data", "Movement and location data"],
+  "q-14": ["It must be cleaned and organized first", "It must be reduced until structured records remain", "It must be moved into one spreadsheet before any analysis begins", "It must be converted into a dashboard before its quality can be assessed"],
+  "q-16": ["Byte, KB, MB, GB, TB, PB, EB, ZB", "Byte, KB, GB, MB, TB, EB, PB, ZB", "KB, Byte, MB, GB, PB, TB, EB, ZB", "Byte, MB, KB, GB, TB, PB, ZB, EB"],
+  "q-17": ["30 hours", "300 hours", "3,000 hours", "30,000 hours"],
+  "q-18": ["Descriptive dashboards", "Machine learning", "Relational indexing", "Manual sampling"],
+  "q-20": ["The source variety problem", "The storage schema problem", "The time lag problem", "The sampling frame problem"],
+  "q-23": ["To remove the need for expert interpretation at every stage of the collection process", "To make insights easier for stakeholders and decision-makers to understand", "To preserve every raw record in its original distributed location for later processing", "To increase the variety of formats included in a summarized decision report"],
+  "q-24": ["Operational managers working from a summarized dashboard", "Data scientists and other experts", "End users working from a small structured report", "Business stakeholders reviewing a final presentation"],
+  "q-27": ["Goals", "Longevity", "Data preparation", "Introspection", "Presentation color palette"],
+  "q-28": ["Scalability", "Reproducibility", "Accessibility", "Interoperability"],
+  "q-29": ["Small Data is often highly structured", "Big Data must be able to absorb unstructured data", "Verifying Big Data quality is challenging", "Small Data usually requires distributed storage across several servers", "Big Data is generally prepared by one user for a single fixed purpose"],
+  "q-30": ["Raw distributed Big Data", "Semi-structured streaming data", "Small Data", "Unstructured archival data"],
+  "q-32": ["A distributed event-stream processing cluster", "A flat spreadsheet with rows and columns", "A data lake containing raw sensor and video files", "A cloud warehouse integrating years of transaction records"],
+  "q-35": ["Extracting hidden patterns and forecasting future outcomes", "Storing, organizing, and maintaining data", "Presenting selected metrics through visual dashboards", "Interpreting business results for strategic decisions"],
+  "q-36": ["Accurate", "Available", "Accessible", "Centralized", "Duplicated"],
+  "q-38": ["Data warehouse", "Database", "Data lake", "Data cube"],
+  "q-39": ["Query", "Report", "Form", "Table"],
+  "q-40": ["Form", "Report", "Query", "Table"],
+  "q-42": ["Operational database", "Data warehouse", "Data lake", "Spreadsheet workbook"],
+  "q-44": ["Consolidates current and historical records from multiple operational sources", "Searches, retrieves, and analyzes data to discover hidden patterns and trends", "Stores raw structured, semi-structured, and unstructured files without a predefined schema for later exploration", "Transforms selected metrics into charts for a management dashboard"],
+  "q-45": ["Predictive analytics", "Data warehousing", "Data mining", "Data cleansing"],
+  "q-46": ["Relational forms", "Cubes", "Flat files", "Query reports"],
+  "q-47": ["A repository that consolidates cleaned current and historical records from operational systems for standardized reporting", "A centralized repository that stores raw structured, semi-structured, and unstructured data", "A multidimensional database optimized for repeated analytical queries across structured business measures", "A distributed spreadsheet model used to summarize small datasets for operational decision support"],
+  "q-49": ["Free-text documents", "Images", "Motion pictures", "Sound recordings", "A clean transaction table with fixed columns", "A JSON event record with named fields"],
+  "q-50": ["Structured data", "Semi-structured data", "Unstructured data", "Multidimensional data"],
+  "q-51": ["Semi-structured data", "Unstructured data", "Structured data", "Behavioral data"],
+  "q-53": ["Maintaining the availability and integrity of stored records", "Transforming data into useful information", "Collecting raw observations from multiple sources", "Defining how tables relate inside a database"],
+  "q-54": ["Excel", "Python", "R", "Tableau", "Microsoft Power BI", "Microsoft Access"],
+  "q-55": ["Pivot Table", "Solver", "Power Query", "Form", "Report", "Relationship designer"],
+  "q-56": ["Query", "Form", "Report", "Pivot Table", "Solver", "Scenario manager"],
+  "q-58": ["Different concepts", "Two terms for the same analytical process", "Equivalent when the data is unstructured", "Different names for data stored in a warehouse"],
+  "q-60": ["Data visualization", "Data cleansing", "Data mining", "Data warehousing"],
+  "q-61": ["Descriptive analytics", "Predictive analytics", "Sentiment analysis", "Market basket analysis"],
+  "q-62": ["Customer segmentation", "Predictive maintenance", "Fraud detection", "Sentiment analysis"],
+  "q-63": ["Customer sentiment analysis", "Personalized marketing", "Predictive maintenance", "Market basket analysis"],
+  "q-64": ["Personalized marketing", "Predictive analytics", "Recommendation system", "Customer sentiment analysis"],
+  "q-65": ["Predictive analytics", "Customer sentiment analysis", "Customer recommendation analysis", "Market basket analysis"],
+  "q-66": ["Predictive maintenance", "Health analytics", "Sentiment analysis", "Energy management"],
+  "q-67": ["Predictive maintenance", "Smart mobility", "Energy management", "Consumer analytics"],
+  "q-68": ["Energy management", "Smart cities", "Internet of Things analytics", "Telecommunications analytics"],
+  "q-69": ["Internet of Things analytics", "Customer sentiment analysis", "Predictive maintenance analytics", "Personalized marketing"],
+  "q-70": ["Telecommunications", "E-commerce", "Education", "Government services"],
+  "q-71": ["E-commerce", "Marketing", "Telecommunications", "Government services"],
+  "q-72": ["Telecommunications analytics", "Education analytics", "Government analytics", "Marketing analytics"],
+  "q-73": ["E-commerce customer analytics", "Government infrastructure analytics", "Telecommunications analytics", "Education engagement analytics"],
+  "q-74": ["Government analytics", "Marketing campaign analytics", "Education engagement analytics", "Telecommunications analytics"],
+  "q-77": ["Large volume and high speed", "High accuracy and limited variety", "Wide variety and low processing speed", "Small volume and strong reproducibility"],
+  "q-78": ["High speed and narrow variety", "Large volume and wide variety", "Low volume and high veracity", "Small scale and fixed structure"],
+  "q-79": ["Converts raw observations into a normalized relational schema", "Transforms raw data into meaningful visual elements", "Summarizes records exclusively through descriptive statistics", "Stores analytical results in a multidimensional data cube"],
+  "q-81": ["Explore", "Detect", "Compare", "Explain", "Normalize", "Archive"],
+  "q-82": ["Data management", "Visual analytics", "Data cleansing", "Predictive modeling"],
+  "q-83": ["The study of how signs, symbols, colors, and shapes create meaning", "The study of how viewers group nearby visual elements into a whole", "The use of immediate visual cues to direct attention before conscious thought", "The process of selecting chart types based on statistical distribution"],
+  "q-84": ["Icon", "Signal", "Symbol", "Index", "Convention"],
+  "q-86": ["Preattentive processing", "Semiotics", "Visual hierarchy", "Figure-ground separation"],
+  "q-87": ["Learned meanings associated with culturally familiar visual symbols", "Visual cues noticed almost instantly before conscious attention", "Grouping effects created when objects are placed near one another", "Design rules used to simplify a chart's labels and annotations"],
+  "q-88": ["Color", "Size", "Shape", "Position", "Orientation", "Length", "Context"],
+  "q-90": ["Position", "Orientation", "Color", "Length"],
+  "q-91": ["Visual hierarchy", "Unified whole", "Common baseline", "Perceived contrast"],
+  "q-92": ["Similarity", "Closure", "Proximity", "Continuity"],
+  "q-93": ["Proximity", "Similarity", "Continuity", "Closure", "Figure-ground"],
+  "q-94": ["Continuity", "Closure", "Proximity", "Similarity"],
+  "q-95": ["Closure", "Proximity", "Continuity", "Similarity", "Figure-ground"],
+  "q-97": ["Place labels near the data they explain", "Keep styling consistent for the same category", "Use white space to show hierarchy", "Place unrelated items close enough to imply a group", "Keep layouts simple", "Change encodings between comparable panels to make each panel distinct"],
+  "q-99": ["Datasets with different correlations can still appear identical whenever they are displayed in summary tables", "Summary statistics should replace plots whenever the sample size is small and the variables are numeric", "Datasets with similar summary statistics can reveal very different patterns when plotted", "Visualizations are reliable when each plotted dataset uses the same scale, marks, and color palette"],
+  "q-102": ["Direct input", "Behavioral reflection", "Structured metadata", "Derived customer profiling"],
+  "q-103": ["Behavioral reflection", "Direct input", "Passive observation", "Derived profiling"],
+  "q-105": ["It identifies where data came from and the context in which it was collected", "It verifies that every processing step followed the same database schema and storage policy", "It proves that a large dataset is automatically suitable for every analytical purpose", "It determines which visualization should be used for each variable in a final report"],
+  "q-106": ["Audience sentiment and ticket-price forecasting", "The fan experience and player insight", "Stadium capacity and financial reporting", "Broadcast scheduling and sponsor selection"],
+  "q-108": ["Staying in touch with people around the world", "Quick access to research and information", "Online education and job-skill development", "Marketing brands, goods, and services", "Automatic verification of claims through popularity signals"],
+  "q-109": ["Anyone can post information", "Online information can be fake", "Posts may not be checked carefully", "Every post is reviewed by platform experts before publication"],
+  "q-110": ["Measurement bias caused by inconsistent income units", "Sampling bias from excluding alumni in certain professions", "Bias from self-reporting and selective responses", "Processing bias caused by averaging records too early"],
+  "q-111": ["People exaggerating their income", "People who choose to respond being counted", "Successful alumni being easier to locate", "Income values being converted into a common currency before comparison"],
+  "q-113": ["To ensure data produces the desired information rather than irrelevant results", "To standardize every laboratory dataset so it can be reused without considering its collection purpose", "To make the resulting dataset large enough to support any future analytical question", "To remove the need to consider patient context during interpretation of the results"],
+  "q-115": ["Compare the number of people who reposted the statistic", "Check its source, collection method, and possible bias", "Accept the statistic provisionally when its conclusion sounds realistic", "Reject the statistic unless it appears in a visual dashboard"],
+  "q-116": ["General Data Protection Regulation", "Global Data Processing Regulation", "General Digital Privacy Regulation", "Government Data Protection Regulation"],
+  "q-117": ["A voluntary framework for improving how organizations document privacy risks", "A legally enforced EU regulation governing the use and integrity of personal data", "A security standard focused on encrypting personal data stored in databases", "A reporting policy activated when organizations transfer personal records across national borders"],
+  "q-119": ["Information that identifies a person when a legal name or government identifier is included", "Any information relating to an individual who can be directly or indirectly identified", "Sensitive information such as health records and biometrics but not ordinary contact details", "Information collected online through cookies and location tracking but not records gathered offline"],
+  "q-121": ["Automated operations that modify, profile, or transfer personal information through a software system", "Any action performed on personal data, whether automated or manual", "The initial collection and final deletion of personal information", "Any analysis that uses personal data to make an automated decision"],
+  "q-122": ["The organization that decides the purposes and means of processing", "The individual the personal data concerns", "The third party that handles records for another organization", "The authority responsible for supervising GDPR compliance"],
+  "q-123": ["Data controller", "Data subject", "Data processor", "Joint processor", "Independent supervisory authority"],
+  "q-124": ["A person who decides whether their information may be collected", "A third party that processes personal data on behalf of a controller", "An organization that determines why and how records will be used", "A regulator that investigates whether processing follows the GDPR principles"],
+  "q-126": ["Racial or ethnic origin", "Religious or philosophical beliefs", "Genetic data", "Sexual orientation", "Political opinions", "Profession or occupation", "Passport number"],
+  "q-127": ["Trade union membership", "Biometric data used to identify a person", "Health data", "A natural person's sex life", "Home mailing address"],
+  "q-128": ["Lawfulness, fairness and transparency", "Purpose limitation and compatibility", "Integrity, confidentiality and security", "Accountability and compliance documentation"],
+  "q-129": ["Data minimization", "Storage limitation", "Purpose limitation", "Integrity and confidentiality"],
+  "q-130": ["Storage limitation", "Data minimization", "Purpose limitation", "Integrity and confidentiality"],
+  "q-131": ["Data minimization", "Accountability", "Accuracy", "Purpose limitation"],
+  "q-132": ["Storage limitation", "Purpose limitation", "Data minimization", "Integrity and confidentiality"],
+  "q-133": ["Accuracy and rectification", "Storage and retention limitation", "Integrity and confidentiality", "Lawfulness, fairness and transparency"],
+  "q-134": ["Integrity and confidentiality", "Purpose limitation", "Accountability", "Lawfulness and transparency"],
+  "q-136": ["Consent", "Contract", "Legal obligation", "Vital interests", "Public interest or official function", "Legitimate interests", "Commercial convenience without a balancing assessment"],
+  "q-137": ["Public interest", "Legitimate interests", "Legal obligation", "Contractual necessity"],
+  "q-138": ["Freely given", "Specific", "Informed", "Unambiguous", "Bundled as a condition for unrelated services", "Documented"],
+  "q-141": ["Right of access", "Right to rectification", "Right to erasure", "Right to restrict processing", "Right to data portability", "Right to object", "Right to require approval of every automated decision"],
+  "q-142": ["Right to rectification", "Right to restrict processing", "Right to data portability", "Right to be informed"],
+  "q-143": ["Right to be informed", "Right of access", "Right to data portability", "Right to restrict processing"],
+  "q-144": ["Right to restrict processing", "Right to erasure", "Right to object", "Right to data portability"],
+  "q-146": ["The Data Protection Officer", "The American College of Greece", "Each academic department", "Each external service provider acting for the institution"],
+  "q-147": ["Faculty", "Staff", "Students", "External vendors acting under their own internal policies"],
+  "q-148": ["The student's tutor or academic supervisor", "The Data Protection Officer", "The relevant external service provider", "The college's marketing department"],
+  "q-149": ["privacy@acg.edu", "dpo@acg.edu", "dataprotection@acg.edu", "compliance@acg.edu"],
+  "q-150": ["Personal data is accidentally deleted", "Unauthorized access to personal data", "A network intrusion such as phishing or malware", "Equipment containing personal data is stolen", "Personal data is emailed to the wrong recipient", "An encrypted file is sent to its authorized recipient"],
+  "q-151": ["Someone shares their own password with a colleague", "A laptop containing personal data is stolen", "A spreadsheet with personal data is sent to the wrong recipient", "An attacker gains unauthorized access to a student-record system"],
+  "q-152": ["Password-protect electronic files", "Use sealed envelopes for printed files sent directly to authorized recipients", "Apply anonymization principles such as IDs instead of names", "Send ordinary email attachments to all department staff"],
+  "q-154": ["The Data Protection Officer", "Their tutor or supervisor", "The relevant academic department", "Each individual research participant"],
+  "q-156": ["Yes, because a graduate may erase every educational record once the final award has been issued and recorded", "No, those records are retained permanently to provide transcripts and safeguard awarded degrees", "Yes, unless the records are needed during the current academic year or for an active academic appeal", "No, because the right to erasure never applies to any category of information held by an educational institution"],
+  "q-157": ["Academic records and grades", "Identity and contact details", "Financial information", "Health or disability information in relevant circumstances", "Participation information from student systems", "Browsing history from unrelated personal devices without an institutional purpose"],
+  "q-158": ["Accreditation or validation institutions", "Public authorities where required", "Partner universities or foundations", "Parents or guardians with student consent", "Authorized vendors", "Members of the public requesting access for personal curiosity"],
+  "q-160": ["ACG Personal Data Protection Policy", "ACG Student Privacy Policy", "ACG Data Retention Policy", "ACG Information Security Policy"],
+  "q-161": ["1946", "1956", "1966", "1976"],
+  "q-162": ["AI follows a larger collection of fixed rules that developers manually expand whenever a new case appears", "AI can analyze training data, identify patterns, and adjust parameters for future outputs", "AI stores more historical records than a conventional relational database and retrieves them more quickly", "AI always explains why a generated output is correct before it is allowed to influence a decision"],
+  "q-163": ["A collection of live user requests submitted after deployment to monitor whether a model remains popular", "Input data and corresponding output results supplied so an AI model can learn parameters", "A validation report used to certify that every model output is accurate and free from contextual bias", "A set of fixed rules manually written by developers to determine each response without parameter adjustment"],
+  "q-164": ["AI designed for specific tasks within a limited domain", "AI able to transfer understanding across every intellectual task", "AI expected to surpass human ability across cognitive domains", "AI that learns without using any examples or input data"],
+  "q-165": ["Voice assistants", "Recommendation algorithms", "Netflix suggested movies", "Amazon recommended purchases", "A theoretical human-level general intelligence system"],
+  "q-166": ["Operational AI specialized for one narrow task such as recommendations or voice recognition", "Theoretical AI capable of understanding and learning any intellectual task a human can", "Speculative AI that exceeds human capability across almost every cognitive domain and activity", "Rule-based software that repeats decisions explicitly programmed by a developer without learning"],
+  "q-167": ["AI specialized for a defined task such as product recommendations or speech recognition", "Human-level AI able to understand and learn any intellectual task that a person can perform", "A speculative intelligence surpassing human capabilities in virtually every cognitive aspect", "Rule-based automation that applies predefined instructions without learning from examples or adjusting parameters"],
+  "q-169": ["Assess training-data quality, relevance, and bias", "Critically evaluate output limitations and reliability", "Use outputs effectively for informed decisions", "Reason about privacy, protection, and ethics", "Treat model output as authoritative once validation metrics are high"],
+  "q-170": ["Use outputs when they are statistically precise, because precision removes contextual bias", "Interpret outputs with awareness of data quality, bias, context, and limitations", "Treat outputs as neutral whenever the model was trained on a large dataset", "Reject outputs unless the model can reproduce a human expert's exact reasoning"],
+  "q-171": ["Development and maintenance cost", "Limited creativity and human touch", "Job replacement and the need for reskilling", "Reduced personal effort to think through tasks", "Automatic elimination of bias once the training dataset becomes large"],
+  "q-173": ["Protecting systems, networks, and data from unauthorized access, damage, or theft", "Ensuring that training datasets contain enough representative examples for reliable predictive modeling", "Restricting personal-data processing to the specific legitimate purpose stated at collection time", "Transforming raw operational records into structured information for analytical decision-making"],
+  "q-174": ["Hacking", "Malware", "Phishing", "Unauthorized manipulation", "Installing authorized software updates"],
+  "q-175": ["Availability", "Confidentiality", "Integrity", "Visual clarity"],
+  "q-177": ["A city that replaces most public services with automated decision-making systems", "A data- and technology-enabled approach to improving urban living and services", "A city that centralizes all resident records in a single government database", "A technology district focused primarily on attracting digital businesses"],
+  "q-178": ["Smart living", "Smart economy", "Smart people", "Smart governance", "Smart mobility", "Smart environment", "Smart infrastructure"],
+  "q-180": ["Smart economy", "Smart people", "Smart governance", "Smart living"],
+  "q-181": ["Connected devices continually collect data about personal activities", "Municipal datasets are always stored in incompatible formats", "City systems rely too heavily on historical rather than real-time records", "Public dashboards can make aggregated environmental data difficult to interpret"],
+  "q-182": ["Wearables", "Cars", "Electronic toll collection", "Electronic wallets", "Public air-quality sensors"],
+  "q-183": ["Traffic cameras and manual police intervention scheduled around historically busy commuting periods", "Surveillance cameras, traffic detectors, controllers, and data-driven arrangements", "Mobile-phone GPS records and monthly reviews used to revise long-term road-development plans", "Electronic toll records and permanent road-capacity expansion based on annual congestion reports"],
+  "q-184": ["Remote payment extension", "Sensors detecting whether a space is occupied", "Radar sensors for illegal parking", "Cameras sending information to a cloud server", "Automatic publication of each driver's identity to nearby motorists"],
+  "q-185": ["Smart governance", "Smart mobility", "Smart living", "Smart economy"],
+  "q-186": ["Fingerprint authentication", "Facial recognition", "Voice recognition", "Eye scanning", "Personal identification number entry"],
+  "q-187": ["A device verifies that the password and biometric sample were entered on the same previously authorized phone", "Collected biometric data is matched against a bank record within a predefined confidence level", "A bank stores each new biometric scan and accepts access when no conflicting identity record is found", "A user selects a previously stored photograph that resembles the current scan closely enough for approval"],
+  "q-189": ["Data visualization is simply a numeric representation of data", "Data visualization can make complex datasets easier to interpret", "Data visualization can improve access to patterns in large datasets", "Data visualization can support analysis by revealing visual relationships"],
+  "q-191": ["People perceive connected visual elements as belonging to the same group even when their styles differ", "People interpret ambiguous or complex visuals in the simplest way possible", "People distinguish a foreground object from the surrounding background when contrast is sufficient", "People follow smooth visual paths rather than abrupt directional changes when scanning a display"],
+  "q-192": ["Elements surrounded by a line or object are perceived as a group", "Elements connected by a line are perceived as belonging together", "Elements that move in the same direction are perceived as a group", "Elements that share a visual attribute are perceived as belonging together"],
+  "q-193": ["Elements with similar color or shape are perceived as belonging together", "Elements connected by lines are perceived as related", "Elements placed within the same boundary are perceived as a group", "Elements moving in the same direction are perceived as related"],
+  "q-194": ["Nearby objects are perceived as members of the same visual group", "Foreground objects are seen as separate from the background", "Connected objects are perceived as members of the same visual group", "Incomplete objects are perceived as complete forms"],
+  "q-195": ["Objects placed inside the same surrounding boundary are perceived as members of a related group", "Objects moving in the same direction and speed are perceived as a group", "Objects connected with a visible line are perceived as related even when their styles differ", "Objects sharing the same visual traits are perceived as members of the same category"],
+  "q-197": ["They use area and angle together, allowing viewers to estimate proportions accurately", "They use position along a common scale, supporting accurate comparisons", "They remove the need for contextual labels by displaying every value directly", "They emphasize differences through connected lines between paired observations"],
+  "q-198": ["The slices require position judgments along a common baseline that may be visually crowded", "Slices rely on angle, area, and arc-position comparisons without a shared baseline", "The slices encode values through length, which becomes unreliable when categories are similar", "The circular layout prevents viewers from identifying which categories contribute to the whole"],
+  "q-199": ["Dumbbell chart", "Slopegraph", "Grouped bar chart", "Donut chart"],
+  "q-200": ["Showing how a composition changes across several parts of a whole", "Focusing attention on differences between two or more values", "Comparing categories by their position along a shared baseline", "Highlighting rank changes between two points through crossing lines"],
+  "q-201": ["Keep comparisons in close proximity", "Provide a common baseline where possible", "Use consistent scales, colors, and labeling across comparable charts", "Vary scales between comparable charts to accentuate local changes", "Align chart structure with the central comparison"],
+  "q-203": ["It ensures the audience notices every data point with equal visual priority", "It helps the audience judge whether a result is positive, negative, or neutral", "It allows a chart to communicate accurately even when the underlying source records are unreliable or incomplete", "It removes the need to choose an appropriate visual encoding for the data"],
+};
+
+Object.entries(midtermChoiceOverrides).forEach(([id, options]) => {
+  const question = questions.find((item) => item.id === id);
+  const includesAnswer = question?.type === "multi"
+    ? question.answer.every((answer) => options.includes(answer))
+    : options.includes(question?.answer);
+  if (!question || question.type === "matching" || !includesAnswer) {
+    throw new Error(`Invalid midterm choices for ${id}`);
+  }
+  question.options = options;
+});
+
+const midtermPromptOverrides = {
+  "q-2": "A platform can store its incoming records, but the accumulated dataset has reached petabyte scale and keeps growing. Which V is the primary concern?",
+  "q-3": "A fraud-detection model loses value if transaction events arrive too slowly for action before authorization. Which V is the primary concern?",
+  "q-6": "A dataset qualifies as Big Data whenever its size exceeds the capacity of a spreadsheet, regardless of its speed, formats, or trustworthiness.",
+  "q-7": "A rapidly growing mix of sensor streams and media may exceed tools designed for conventional datasets, even when each source can be inspected separately.",
+  "q-11": "A retailer studies customer purchase histories from its web store to refine product offers. Which source category best describes the records?",
+  "q-13": "Combining distributed source data into useful evidence commonly requires cleansing and organization before interpretation.",
+  "q-19": "Compared with a delayed batch report, a Big Data pipeline can support action by detecting emerging patterns while events are still arriving.",
+  "q-21": "Moving distributed event streams into additional Excel worksheets is generally sufficient for storing and analyzing them at Big Data scale.",
+  "q-22": "A compact report designed around a manager's decision is closer to the end user's experience than the raw distributed records behind it.",
+  "q-25": "When a dataset becomes Big Data, upgrading processor speed, memory, and storage capacity is sufficient; workflows and architecture can remain unchanged.",
+  "q-26": "A project can involve Small Data and still require costly collection, expertise, or implementation.",
+  "q-31": "Even organizations that use Big Data systems commonly use Small Data in some part of their operations.",
+  "q-33": "Broadly collected Big Data is typically restricted to one predefined question and discarded after that question is answered.",
+  "q-34": "A Big Data system may distribute records across servers in different locations rather than store them in one local file.",
+  "q-37": "Data management decisions should involve users because accuracy, availability, and accessibility depend partly on operational needs.",
+  "q-43": "A warehouse can support analysis over time by consolidating historical records alongside current data.",
+  "q-48": "Before raw data enters a data lake, it must conform to a predefined relational schema.",
+  "q-57": "A spreadsheet is a flat, two-dimensional row-and-column structure even when it contains formulas and multiple worksheets.",
+  "q-59": "An analysis cannot produce useful insight unless its source dataset qualifies as Big Data.",
+  "q-80": "A visualization may be evaluated as decoration because its signs, colors, and shapes do not affect interpretation.",
+  "q-85": "Two audiences can interpret the same visual symbol differently because meaning depends on learned context.",
+  "q-89": "Adding several competing preattentive signals to the same chart generally makes its intended message clearer.",
+  "q-98": "A well-designed chart can communicate its main finding without requiring the viewer to inspect the source table first.",
+  "q-100": "Anscombe's Quartet is notable because its four datasets have substantially different correlations and best-fit regression lines.",
+  "q-107": "A claim shared through social media can be treated as reliable when it receives broad engagement from users.",
+  "q-112": "Increasing dataset size can reduce clarity when the additional records have doubtful quality.",
+  "q-114": "Interpreting a value responsibly requires attention to the conditions and purpose of its collection.",
+  "q-118": "An organization based outside the EU can still fall within GDPR scope when it targets or collects data relating to people in the EU.",
+  "q-120": "A record falls outside the definition of personal data whenever it omits the person's legal name.",
+  "q-139": "Consent remains valid as a lawful basis in part because the data subject can later withdraw it.",
+  "q-140": "After consent is withdrawn, an organization may continue the same processing by relabeling it under another legal basis without further justification.",
+  "q-153": "ACG may publish a student's photograph without prior written consent when the student is an adult.",
+  "q-155": "An ACG student using human research participants needs Institutional Review Board approval.",
+  "q-159": "A valid erasure request requires ACG to delete transcript-reproduction records even when permanent retention supports transcripts and awarded degrees.",
+  "q-172": "Careful programming is sufficient to prevent an AI model from inheriting bias from its training data.",
+  "q-176": "Data literacy can reduce cybersecurity risk by helping people recognize phishing and make more prudent sharing decisions.",
+  "q-188": "Placing related infographic elements together encourages viewers to perceive them as one component.",
+  "q-190": "A pie chart is generally preferable to a common-baseline chart when the task is precise comparison between two sets of values.",
+  "q-202": "Changing a chart's orientation or contextual comparison can change the message viewers perceive from the same dataset.",
+};
+
+Object.entries(midtermPromptOverrides).forEach(([id, prompt]) => {
+  const question = questions.find((item) => item.id === id);
+  if (!question) throw new Error(`Invalid midterm prompt for ${id}`);
+  question.prompt = prompt;
+});
+
+function validateMidtermBank() {
+  questions.forEach((question) => {
+    const includesAnswer = question.type === "matching"
+      ? question.pairs.every(([, answer]) => question.options.includes(answer))
+      : question.type === "multi"
+        ? question.answer.every((answer) => question.options.includes(answer))
+        : question.options.includes(question.answer);
+    if (!includesAnswer) throw new Error(`Missing answer option for ${question.id}`);
+
+    question.options.forEach((option) => {
+      if (/\bonly\b/i.test(option)) throw new Error(`Answer cue word found in ${question.id}`);
+    });
+
+    if (question.type === "single") {
+      const optionLengths = question.options.map((option) => option.length);
+      const longestDistractor = Math.max(...question.options
+        .filter((option) => option !== question.answer)
+        .map((option) => option.length));
+      if (new Set(optionLengths).size > 1 && question.answer.length >= longestDistractor) {
+        throw new Error(`Correct answer is a longest option in ${question.id}`);
+      }
+    }
+  });
+}
+
+validateMidtermBank();
+
 const typeLabels = {
   single: "Multiple choice",
   multi: "Select all that apply",
@@ -1071,6 +1315,12 @@ function formatCorrectAnswer(question) {
   return question.answer;
 }
 
+function formatMatchingAnswerList(question) {
+  return `<ul class="matching-feedback-list">${question.pairs.map(([term, value]) => (
+    `<li><span>${term}</span><strong aria-hidden="true">→</strong><span>${value}</span></li>`
+  )).join("")}</ul>`;
+}
+
 function submitAnswer() {
   const question = state.session[state.index];
   captureResponse(question);
@@ -1087,6 +1337,10 @@ function submitAnswer() {
 function showFeedback(question) {
   const correct = state.correct[question.id];
   feedback.className = `feedback visible ${correct ? "" : "incorrect"}`;
+  if (question.type === "matching") {
+    feedback.innerHTML = `<b>${correct ? "Correct matches:" : "Not quite. Correct matches:"}</b>${formatMatchingAnswerList(question)}<p>${question.explanation}</p>`;
+    return;
+  }
   feedback.innerHTML = `<b>${correct ? "Correct." : `Not quite. Correct answer: ${formatCorrectAnswer(question)}`}</b>${question.explanation}`;
 }
 
@@ -1162,7 +1416,10 @@ function renderMistakes(missed) {
   missed.forEach((question) => {
     const card = document.createElement("article");
     card.className = "review-card";
-    card.innerHTML = `<b>${question.prompt}</b><p>Correct answer: ${formatCorrectAnswer(question)}</p><small>${question.explanation}</small>`;
+    const correctAnswer = question.type === "matching"
+      ? `<p>Correct matches:</p>${formatMatchingAnswerList(question)}`
+      : `<p>Correct answer: ${formatCorrectAnswer(question)}</p>`;
+    card.innerHTML = `<b>${question.prompt}</b>${correctAnswer}<small>${question.explanation}</small>`;
     box.append(card);
   });
 }

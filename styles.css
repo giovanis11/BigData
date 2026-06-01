@@ -1062,6 +1062,41 @@ select {
   margin-bottom: 4px;
 }
 
+.feedback p {
+  margin: 8px 0 0;
+}
+
+.matching-feedback-list {
+  display: grid;
+  gap: 5px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.matching-feedback-list li {
+  display: grid;
+  align-items: center;
+  padding: 7px 9px;
+  border: 1px solid rgba(13, 111, 107, 0.2);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.52);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.35fr);
+  gap: 9px;
+}
+
+.feedback.incorrect .matching-feedback-list li {
+  border-color: rgba(227, 111, 86, 0.26);
+}
+
+.matching-feedback-list strong {
+  color: var(--teal);
+}
+
+.feedback.incorrect .matching-feedback-list strong {
+  color: var(--coral);
+}
+
 .question-actions {
   display: flex;
   align-items: center;
@@ -1182,6 +1217,11 @@ select {
 
 .review-card small {
   color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.review-card .matching-feedback-list {
+  margin: 7px 0 9px;
   font-size: 12px;
 }
 
